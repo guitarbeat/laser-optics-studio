@@ -1,71 +1,89 @@
-# Laser Optics Schematic Project
+# Laser Optics Diagram Tool
 
-This repository contains LaTeX files for creating optical schematic diagrams using PSTricks and the pst-optexp package.
+A specialized tool for creating professional-quality optical diagrams for laser setups and scientific publications. This project provides multiple ways to create diagrams:
+
+1. **LaTeX with pst-optexp**: Direct use of LaTeX with the pst-optexp package
+2. **Python GUI Interface**: A user-friendly graphical interface for creating diagrams without writing LaTeX code
+3. **Custom AI Agent**: A specialized Cursor AI agent for optical diagram creation
+
+## Features
+
+- Create complex optical diagrams with exact positioning of components
+- Professional-quality output suitable for publications and presentations
+- Component library with common optical elements (mirrors, lenses, beam splitters, etc.)
+- Color-coded beam paths to represent different wavelengths
+- Export to PDF, SVG, or other formats
 
 ## Project Structure
 
 ```
-.
-├── src/                # Main source directory
-│   ├── schematics/     # Schematic diagrams
-│   ├── tests/          # Test files
-│   ├── docs/           # Documentation
-│   ├── templates/      # Template files
-│   └── cheatsheets/    # Reference cheatsheets
-└── build/              # Output directory (created by make)
-    ├── schematics/     # Built schematic PDFs
-    ├── tests/          # Built test PDFs
-    ├── docs/           # Built documentation PDFs
-    └── cheatsheets/    # Built cheatsheet PDFs
+lasers/
+├── build/                    # Output directory for compiled diagrams
+├── src/                      # Source files
+│   ├── cheatsheets/          # Quick reference examples
+│   ├── docs/                 # Documentation
+│   ├── schematics/           # Schematic diagrams
+│   ├── templates/            # Reusable templates
+│   └── tests/                # Test files
+│   └── optical_diagram_creator.py  # Python GUI tool
+├── xnotes/                   # Project notes and configuration
+├── Makefile                  # Build automation
+└── README.md                 # Project documentation
 ```
 
-## Prerequisites
+## Getting Started
 
-- LaTeX distribution (TeXLive or MikTeX recommended)
-- PSTricks packages
-- pst-optexp package for optical schematics
+### Prerequisites
 
-## Usage
+- LaTeX installation with PSTricks and pst-optexp packages
+- Python 3.6+ with Tkinter (for the GUI interface)
+- XeLaTeX (recommended for PDF generation)
 
-### Building Files
+### Building Diagrams with LaTeX
+
+1. Create a new .tex file in the `src/schematics/` directory (see templates for examples)
+2. Use the Makefile to build your diagram:
 
 ```bash
-# Build default example (imaging system schematic)
-make
+# Build a specific schematic
+make build/schematics/your_file.pdf
 
-# Build all PDFs
-make all-pdfs
-
-# Build specific categories
+# Build all schematics
 make schematics
-make tests
-make docs
-make cheatsheets
 
-# Clean build artifacts
-make clean
+# Build a simple example to test the system
+make test
 ```
 
-### Adding New Files
+### Using the Python GUI
 
-To add new files, place them in the appropriate directory under `src/`:
+1. Run the Python GUI tool:
 
-- For schematics: `src/schematics/`
-- For tests: `src/tests/`
-- For documentation: `src/docs/`
-- For cheatsheets: `src/cheatsheets/`
+```bash
+python src/optical_diagram_creator.py
+```
 
-Use the template in `src/templates/schematic_template.tex` as a starting point for new schematics.
+2. Use the component library to add optical elements to your diagram
+3. Configure component properties as needed
+4. Generate LaTeX code or export directly to PDF
 
-## Imaging System Schematic
+### Using the Custom AI Agent
 
-The primary schematic in this project is an optical imaging system that demonstrates:
+This project includes a custom Cursor AI agent specialized in optical diagrams. To use it:
 
-- A light source
-- Focusing optics
-- Imaging lenses
-- Detection setup
+1. Open the project in Cursor AI
+2. Create a custom agent using the prompt in `xnotes/custom-agents.md`
+3. Describe your optical setup to the agent in natural language
+4. The agent will help create the LaTeX code and generate the diagram
+
+## Examples
+
+See the `src/cheatsheets/` directory for simple examples and the `src/schematics/` directory for more complex diagrams.
+
+## Contributing
+
+Contributions welcome! Add to the component library, improve the GUI, or enhance the LaTeX templates.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+MIT License 

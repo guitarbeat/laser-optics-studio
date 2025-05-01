@@ -1,0 +1,16 @@
+# Python Dependencies for Laser Optics Diagram Tool
+
+# No external packages required for basic functionality (uses standard library and tkinter)
+# However, potential future extensions might use:
+
+# For enhanced GUI capabilities
+# ttkthemes>=3.2.0  # For better looking GUI themes
+# pillow>=9.0.0     # For image processing and export features
+
+# For advanced diagram features
+# matplotlib>=3.5.0  # For interactive plotting and visualization
+# numpy>=1.21.0      # For numerical operations
+
+# For potential future extensions
+# pyyaml>=6.0       # For configuration files
+# requests>=2.27.0  # For template download features 
