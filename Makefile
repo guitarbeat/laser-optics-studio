@@ -1,4 +1,4 @@
-# Makefile for PSTricks/PST-optexp automation - Simplified Structure
+# Makefile for PSTricks/PST-optexp automation - Improved Structure
 #
 # Directory Structure:
 #   src/                # Main source directory
@@ -21,6 +21,8 @@
 #   make docs           # Build all PDFs in src/docs/
 #   make cheatsheets    # Build all PDFs in src/cheatsheets/
 #   make clean          # Remove all generated files in build/
+#   make debug          # Show variables for debugging
+#   make test           # Test build system with simple cheatsheet
 #
 # Rules:
 #   all:                Build all PDFs
@@ -71,30 +73,51 @@ cheatsheets: build-dirs $(CHEATSHEET_PDF)
 # Build all PDFs target
 all-pdfs: schematics tests docs cheatsheets
 
-# Pattern rules for tex files in src subdirectories
-build/schematics/%.dvi: src/schematics/%.tex
+# Direct PDF generation using pdflatex with proper options for PSTricks
+build/schematics/%.pdf: src/schematics/%.tex
 	@mkdir -p $(dir $@)
-	latex -output-directory=$(dir $@) $<
+	xelatex -output-directory=$(dir $@) $<
+	@if [ -f $(dir $@)$*.aux ]; then \
+		xelatex -output-directory=$(dir $@) $<; \
+	fi
 
-build/tests/%.dvi: src/tests/%.tex
+build/tests/%.pdf: src/tests/%.tex
 	@mkdir -p $(dir $@)
-	latex -output-directory=$(dir $@) $<
+	xelatex -output-directory=$(dir $@) $<
+	@if [ -f $(dir $@)$*.aux ]; then \
+		xelatex -output-directory=$(dir $@) $<; \
+	fi
 
-build/docs/%.dvi: src/docs/%.tex
+build/docs/%.pdf: src/docs/%.tex
 	@mkdir -p $(dir $@)
-	latex -output-directory=$(dir $@) $<
+	xelatex -output-directory=$(dir $@) $<
+	@if [ -f $(dir $@)$*.aux ]; then \
+		xelatex -output-directory=$(dir $@) $<; \
+	fi
 
-build/cheatsheets/%.dvi: src/cheatsheets/%.tex
+build/cheatsheets/%.pdf: src/cheatsheets/%.tex
 	@mkdir -p $(dir $@)
-	latex -output-directory=$(dir $@) $<
+	xelatex -output-directory=$(dir $@) $<
+	@if [ -f $(dir $@)$*.aux ]; then \
+		xelatex -output-directory=$(dir $@) $<; \
+	fi
 
-# General rules for PS and PDF conversion
-build/%.ps: build/%.dvi
-	dvips $< -o $@
+# Debug target to print variable values
+debug:
+	@echo "SCHEMATIC_TEX: $(SCHEMATIC_TEX)"
+	@echo "SCHEMATIC_PDF: $(SCHEMATIC_PDF)"
+	@echo "TEST_TEX: $(TEST_TEX)" 
+	@echo "TEST_PDF: $(TEST_PDF)"
+	@echo "CHEATSHEET_TEX: $(CHEATSHEET_TEX)"
+	@echo "CHEATSHEET_PDF: $(CHEATSHEET_PDF)"
+	@echo "DOC_TEX: $(DOC_TEX)"
+	@echo "DOC_PDF: $(DOC_PDF)"
 
-build/%.pdf: build/%.ps
-	ps2pdf $< $@
-	@rm -f $< $*.dvi
+# Test target to verify build system
+test:
+	@echo "Testing build system..."
+	$(MAKE) build/cheatsheets/simple_cheatsheet.pdf
+	@echo "Test complete. Check build/cheatsheets/simple_cheatsheet.pdf"
 
 clean:
 	rm -rf build 
