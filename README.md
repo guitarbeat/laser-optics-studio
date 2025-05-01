@@ -1,89 +1,70 @@
 # Laser Optics Diagram Tool
 
-A specialized tool for creating professional-quality optical diagrams for laser setups and scientific publications. This project provides multiple ways to create diagrams:
-
-1. **LaTeX with pst-optexp**: Direct use of LaTeX with the pst-optexp package
-2. **Python GUI Interface**: A user-friendly graphical interface for creating diagrams without writing LaTeX code
-3. **Custom AI Agent**: A specialized Cursor AI agent for optical diagram creation
+A graphical interface for creating optical diagrams using the pst-optexp LaTeX package. This tool allows drag-and-drop placement of optical components, configuration of their properties, and automatic generation of LaTeX code with PDF output.
 
 ## Features
 
-- Create complex optical diagrams with exact positioning of components
-- Professional-quality output suitable for publications and presentations
-- Component library with common optical elements (mirrors, lenses, beam splitters, etc.)
-- Color-coded beam paths to represent different wavelengths
-- Export to PDF, SVG, or other formats
+- Graphical component library with common optical elements:
+  - **Light Sources**: Lasers, LEDs
+  - **Optical Components**: Lenses, mirrors, beam splitters, wave plates
+  - **Detectors**: Photodiodes, cameras
+- Interactive canvas for designing optical setups
+- Automatic LaTeX code generation
+- Direct PDF export capability
+- Built-in LaTeX preview
+
+## System Requirements
+
+- Python 3
+- Tkinter (for GUI)
+- LaTeX distribution with pst-optexp package
+
+## Usage
+
+Run the application with:
+
+```bash
+python3 src/main.py
+```
 
 ## Project Structure
 
+The project follows a modular architecture:
+
 ```
-lasers/
-├── build/                    # Output directory for compiled diagrams
-├── src/                      # Source files
-│   ├── cheatsheets/          # Quick reference examples
-│   ├── docs/                 # Documentation
-│   ├── schematics/           # Schematic diagrams
-│   ├── templates/            # Reusable templates
-│   └── tests/                # Test files
-│   └── optical_diagram_creator.py  # Python GUI tool
-├── xnotes/                   # Project notes and configuration
-├── Makefile                  # Build automation
-└── README.md                 # Project documentation
-```
-
-## Getting Started
-
-### Prerequisites
-
-- LaTeX installation with PSTricks and pst-optexp packages
-- Python 3.6+ with Tkinter (for the GUI interface)
-- XeLaTeX (recommended for PDF generation)
-
-### Building Diagrams with LaTeX
-
-1. Create a new .tex file in the `src/schematics/` directory (see templates for examples)
-2. Use the Makefile to build your diagram:
-
-```bash
-# Build a specific schematic
-make build/schematics/your_file.pdf
-
-# Build all schematics
-make schematics
-
-# Build a simple example to test the system
-make test
+src/
+├── app/                  # Main application code
+│   ├── gui/              # GUI components
+│   │   ├── application.py     # Main application class
+│   │   ├── canvas_manager.py  # Canvas drawing and interaction
+│   │   └── component_library.py # Component library management
+│   ├── models/           # Data models
+│   │   ├── diagram.py         # Diagram model
+│   │   └── optical_component.py # Component models
+│   └── utils/            # Utility functions
+│       ├── export.py          # PDF and other exports
+│       └── latex_generator.py # LaTeX code generation
+├── docs/                 # Documentation
+│   └── component-reference.md # Component reference
+├── templates/            # LaTeX templates
+│   └── examples/         # Example optical diagrams
+└── main.py               # Main entry point
 ```
 
-### Using the Python GUI
+## Building Diagrams
 
-1. Run the Python GUI tool:
+The tool can generate both LaTeX files and PDFs directly:
 
-```bash
-python src/optical_diagram_creator.py
-```
+1. Design your optical system using the GUI
+2. Click "Generate LaTeX" to save the LaTeX code
+3. Click "Export PDF" to directly create a PDF
 
-2. Use the component library to add optical elements to your diagram
-3. Configure component properties as needed
-4. Generate LaTeX code or export directly to PDF
+## Notes from Original Documentation
 
-### Using the Custom AI Agent
+The imaging system is designed to demonstrate optical principles in a laser-based setup. Key components include:
 
-This project includes a custom Cursor AI agent specialized in optical diagrams. To use it:
-
-1. Open the project in Cursor AI
-2. Create a custom agent using the prompt in `xnotes/custom-agents.md`
-3. Describe your optical setup to the agent in natural language
-4. The agent will help create the LaTeX code and generate the diagram
-
-## Examples
-
-See the `src/cheatsheets/` directory for simple examples and the `src/schematics/` directory for more complex diagrams.
-
-## Contributing
-
-Contributions welcome! Add to the component library, improve the GUI, or enhance the LaTeX templates.
-
-## License
-
-MIT License 
+- **Light Source**: A 1064 nm laser that provides the initial beam
+- **Beam Expander**: Expands the beam to the desired diameter
+- **Focusing Optics**: Controls the beam focus and shape
+- **Imaging Lenses**: Creates the desired image magnification and quality
+- **Detection System**: Collects the final image or measurement
