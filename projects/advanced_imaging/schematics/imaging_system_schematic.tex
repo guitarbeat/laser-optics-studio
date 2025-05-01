@@ -1,0 +1,41 @@
+\documentclass{standalone}
+\usepackage{pst-optexp}
+\usepackage{nicefrac}
+\begin{document}
+
+% --- Imaging System Schematic (minimal robust version) ---
+\begin{pspicture}(-2,-2)(18,8)
+    % Node definitions
+    \pnodes(0,7){Pump}(0,5.5){Seed}(2,6.25){YbFiber}(4,6.25){BB1}(5,6.25){PBS}
+    \pnodes(6,6.25){HWP1}(7,6.25){GLP}(8,6.25){Mirror1}
+    \pnodes(10,6.25){Lens1}(12,6.25){Lens2}(14,6.25){Mirror2}(16,6.25){Dichroic}
+    \pnodes(18,6.25){EOM}(20,6.25){OBJ}(22,6.25){CO}(24,6.25){PMT}
+    \pnodes(10,7.5){Grating1}(12,7.5){Grating2}(14,7.5){Mirror3}
+
+    \begin{optexp}
+        \optbox[position=start, innerlabel, optboxwidth=1.2](Pump)(YbFiber){LD Pump\\915 nm}
+        \optbox[position=start, innerlabel, optboxwidth=1.2](Seed)(YbFiber){Seed\\1030 nm\\80 MHz}
+        \optfiber[position=end, fiberloopradius=0.2, newFiber={linewidth=1.5\pslinewidth}](YbFiber)(BB1){Yb Fiber}
+        \optdetector[dettype=block](YbFiber)(BB1){BB}
+        \beamsplitter(BB1)(PBS)(HWP1){PBS}
+        \optretplate(PBS)(HWP1){HWP}
+        \beamsplitter(HWP1)(GLP)(Mirror1){GLP}
+        \mirror(GLP)(Mirror1)
+        % Grating compressor branch
+        \optgrating(Mirror1)(Grating1)(Grating2){Grating}
+        \mirror(Grating2)(Mirror3)
+        \optgrating(Mirror3)(Grating2)(Mirror2){Grating}
+        % Main path
+        \mirror(Mirror1)(Lens1)
+        \lens(Lens1)(Lens2){TL}
+        \lens(Lens2)(Mirror2){SL}
+        \mirror(Mirror2)(Dichroic)
+        \beamsplitter(Dichroic)(EOM)(OBJ){Dichroic}
+        \eom(EOM)(OBJ){EOM}
+        \optbox(OBJ)(CO){OBJ}
+        \optbox(CO)(PMT){CO}
+        \optbox(PMT)(PMT){PMT}
+    \end{optexp}
+\end{pspicture}
+
+\end{document}

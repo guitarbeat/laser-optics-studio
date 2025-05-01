@@ -1,0 +1,26 @@
+\documentclass{standalone}
+\usepackage{pst-optexp}
+
+\begin{document}
+
+% Simple cheatsheet example
+\begin{pspicture}(-1,-1)(12,6)
+    % Basic Lens System
+    \pnodes(1,4){Source}(4,4){Lens1}(8,4){Lens2}(11,4){Image}
+    
+    \begin{optexp}
+        \optbox[position=start, innerlabel, optboxwidth=1.2](Source)(Lens1){Light Source}
+        \lens[lensradius=1.2](Lens1)(Lens2){Lens 1}
+        \lens[lensradius=0.8](Lens2)(Image){Lens 2}
+        \optbox[position=end, innerlabel, optboxwidth=1.2](Image)(Image){Image}
+        
+        % Beam
+        \addtopsstyle{Beam}{linestyle=none, fillstyle=solid, fillcolor=green!70!black}
+        \drawwidebeam[beamwidth=0.15]{1-4}
+    \end{optexp}
+    
+    % Add a title
+    \rput[b](6,5.5){Basic Two-Lens System}
+\end{pspicture}
+
+\end{document} 
