@@ -1,27 +1,22 @@
-# Laser Optics Schematic Projects
+# Laser Optics Schematic Project
 
-This repository contains LaTeX projects for creating optical schematic diagrams using PSTricks and the pst-optexp package.
+This repository contains LaTeX files for creating optical schematic diagrams using PSTricks and the pst-optexp package.
 
 ## Project Structure
 
 ```
 .
-├── projects/                # Main projects directory
-│   ├── basic_laser/         # Basic laser setup project
-│   │   ├── schematics/      # Schematic diagrams
-│   │   ├── tests/           # Test files
-│   │   └── docs/            # Documentation
-│   └── advanced_imaging/    # Advanced imaging system project
-│       ├── schematics/      # Schematic diagrams
-│       ├── tests/           # Test files
-│       └── docs/            # Documentation
-├── common/                  # Common resources
-│   ├── cheatsheets/         # Reference cheatsheets
-│   └── templates/           # Template files
-└── build/                   # Output directory (created by make)
-    ├── basic_laser/         # Built PDFs for basic_laser
-    ├── advanced_imaging/    # Built PDFs for advanced_imaging
-    └── common/              # Built PDFs for common resources
+├── src/                # Main source directory
+│   ├── schematics/     # Schematic diagrams
+│   ├── tests/          # Test files
+│   ├── docs/           # Documentation
+│   ├── templates/      # Template files
+│   └── cheatsheets/    # Reference cheatsheets
+└── build/              # Output directory (created by make)
+    ├── schematics/     # Built schematic PDFs
+    ├── tests/          # Built test PDFs
+    ├── docs/           # Built documentation PDFs
+    └── cheatsheets/    # Built cheatsheet PDFs
 ```
 
 ## Prerequisites
@@ -32,51 +27,44 @@ This repository contains LaTeX projects for creating optical schematic diagrams 
 
 ## Usage
 
-### Building Projects
+### Building Files
 
 ```bash
-# Build default example
+# Build default example (imaging system schematic)
 make
 
-# Build all projects
-make all-projects
+# Build all PDFs
+make all-pdfs
 
-# Build a specific project
-make project-basic_laser
-make project-advanced_imaging
-
-# Build common resources
+# Build specific categories
+make schematics
+make tests
+make docs
 make cheatsheets
 
 # Clean build artifacts
 make clean
 ```
 
-### Adding New Projects
+### Adding New Files
 
-1. Create a new project directory under `projects/`:
+To add new files, place them in the appropriate directory under `src/`:
 
-```bash
-mkdir -p projects/my_new_project/{schematics,tests,docs}
-```
+- For schematics: `src/schematics/`
+- For tests: `src/tests/`
+- For documentation: `src/docs/`
+- For cheatsheets: `src/cheatsheets/`
 
-2. Add the project name to the `PROJECTS` variable in the Makefile:
+Use the template in `src/templates/schematic_template.tex` as a starting point for new schematics.
 
-```makefile
-PROJECTS := basic_laser advanced_imaging my_new_project
-```
+## Imaging System Schematic
 
-3. Add your LaTeX files to the appropriate directories under your project.
+The primary schematic in this project is an optical imaging system that demonstrates:
 
-## Example Projects
-
-### Basic Laser
-
-A simple laser setup with a laser source, lens, and screen.
-
-### Advanced Imaging
-
-A more complex optical system for imaging applications.
+- A light source
+- Focusing optics
+- Imaging lenses
+- Detection setup
 
 ## License
 

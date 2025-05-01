@@ -1,95 +1,90 @@
-# Makefile for PSTricks/PST-optexp automation - Project-based structure
+# Makefile for PSTricks/PST-optexp automation - Simplified Structure
 #
 # Directory Structure:
-#   projects/          # Main projects directory
-#     project1/        # First project
-#       schematics/    # Schematic diagrams for project1
-#       tests/         # Test files for project1
-#       docs/          # Documentation for project1
-#     project2/        # Second project
-#       schematics/    # Schematic diagrams for project2
-#       tests/         # Test files for project2
-#       docs/          # Documentation for project2
-#   common/            # Common resources shared across projects
-#     cheatsheets/     # Reference cheatsheets
-#     templates/       # Template files
-#   build/             # Output directory
-#     project1/        # Built PDFs for project1
-#     project2/        # Built PDFs for project2
-#     common/          # Built PDFs for common resources
+#   src/                # Main source directory
+#     schematics/       # Schematic diagrams
+#     tests/            # Test files
+#     docs/             # Documentation
+#     templates/        # Template files
+#     cheatsheets/      # Reference cheatsheets
+#   build/              # Output directory
+#     schematics/       # Built schematic PDFs
+#     tests/            # Built test PDFs
+#     docs/             # Built documentation PDFs
+#     cheatsheets/      # Built cheatsheet PDFs
 #
 # Usage:
-#   make                    # Build default targets (simple example)
-#   make all                # Build all PDFs from all projects
-#   make project-[name]     # Build all PDFs for a specific project
-#   make cheatsheets        # Build all PDFs in common/cheatsheets/
-#   make clean              # Remove all generated files in build/
+#   make                # Build default targets (imaging_system_schematic.pdf)
+#   make all            # Build all PDFs
+#   make schematics     # Build all PDFs in src/schematics/
+#   make tests          # Build all PDFs in src/tests/
+#   make docs           # Build all PDFs in src/docs/
+#   make cheatsheets    # Build all PDFs in src/cheatsheets/
+#   make clean          # Remove all generated files in build/
 #
 # Rules:
-#   all:                Build all projects
-#   project-[name]:     Build specific project (e.g., make project-basic_laser)
-#   cheatsheets:        Build all PDFs from common/cheatsheets/
-#   build/project1/%.pdf: Build PDF from project1/%.tex
+#   all:                Build all PDFs
+#   schematics:         Build all PDFs from src/schematics/
+#   tests:              Build all PDFs from src/tests/
+#   docs:               Build all PDFs from src/docs/
+#   cheatsheets:        Build all PDFs from src/cheatsheets/
+#   build/%.pdf:        Build PDF from src/%.tex
 #   clean:              Remove all generated files
 #
-# To add new projects, create new directories under projects/
+# To add new files, place them in the appropriate src/ subdirectory.
 
-# Default target is a simple example
-all: default-example
+# Default target builds the imaging system schematic
+all: default-target
 
 # Create output directories
 build-dirs:
-	mkdir -p build/common/cheatsheets
+	mkdir -p build/schematics build/tests build/docs build/cheatsheets
 
-# Default projects (add your projects to this list)
-PROJECTS := basic_laser advanced_imaging
+# Find all tex files in subdirectories
+SCHEMATIC_TEX := $(wildcard src/schematics/*.tex)
+TEST_TEX := $(wildcard src/tests/*.tex)
+DOC_TEX := $(wildcard src/docs/*.tex)
+CHEATSHEET_TEX := $(wildcard src/cheatsheets/*.tex)
+ALL_TEX := $(SCHEMATIC_TEX) $(TEST_TEX) $(DOC_TEX) $(CHEATSHEET_TEX)
 
-# Define a pattern rule to create build directories for each project
-define make-project-build-dir
-build/$(1):
-	mkdir -p build/$(1)/schematics build/$(1)/tests build/$(1)/docs
-endef
+# Generate corresponding PDF targets
+SCHEMATIC_PDF := $(patsubst src/schematics/%.tex,build/schematics/%.pdf,$(SCHEMATIC_TEX))
+TEST_PDF := $(patsubst src/tests/%.tex,build/tests/%.pdf,$(TEST_TEX))
+DOC_PDF := $(patsubst src/docs/%.tex,build/docs/%.pdf,$(DOC_TEX))
+CHEATSHEET_PDF := $(patsubst src/cheatsheets/%.tex,build/cheatsheets/%.pdf,$(CHEATSHEET_TEX))
+ALL_PDF := $(SCHEMATIC_PDF) $(TEST_PDF) $(DOC_PDF) $(CHEATSHEET_PDF)
 
-# Apply the rule to each project
-$(foreach proj,$(PROJECTS),$(eval $(call make-project-build-dir,$(proj))))
-
-# Build all projects
-all-projects: $(foreach proj,$(PROJECTS),project-$(proj))
-
-# Pattern rule for building a specific project
-project-%: build/%
-	@echo "Building project $*..."
-	$(MAKE) $(foreach dir,schematics tests docs,$(patsubst projects/$*/$(dir)/%.tex,build/$*/$(dir)/%.pdf,$(wildcard projects/$*/$(dir)/*.tex)))
-
-# Cheatsheets
-CHEATSHEET_TEX := $(wildcard common/cheatsheets/*.tex)
-CHEATSHEET_PDF := $(patsubst common/cheatsheets/%.tex,build/common/cheatsheets/%.pdf,$(CHEATSHEET_TEX))
-
-cheatsheets: build-dirs $(CHEATSHEET_PDF)
-
-# Default example target (modify as needed)
-default-example: build-dirs
-	@if [ -f projects/basic_laser/schematics/simple_schematic.tex ]; then \
-		$(MAKE) build/basic_laser/schematics/simple_schematic.pdf; \
+# Default target
+default-target: build-dirs
+	@if [ -f src/schematics/imaging_system_schematic.tex ]; then \
+		$(MAKE) build/schematics/imaging_system_schematic.pdf; \
 	else \
-		echo "Simple example not found. Run 'make migrate' to set up project structure."; \
+		echo "Imaging system schematic not found."; \
 	fi
 
-# Pattern rules for tex files in project directories
-build/%/schematics/%.dvi: projects/%/schematics/%.tex
+# Build targets for each category
+schematics: build-dirs $(SCHEMATIC_PDF)
+tests: build-dirs $(TEST_PDF)
+docs: build-dirs $(DOC_PDF)
+cheatsheets: build-dirs $(CHEATSHEET_PDF)
+
+# Build all PDFs target
+all-pdfs: schematics tests docs cheatsheets
+
+# Pattern rules for tex files in src subdirectories
+build/schematics/%.dvi: src/schematics/%.tex
 	@mkdir -p $(dir $@)
 	latex -output-directory=$(dir $@) $<
 
-build/%/tests/%.dvi: projects/%/tests/%.tex
+build/tests/%.dvi: src/tests/%.tex
 	@mkdir -p $(dir $@)
 	latex -output-directory=$(dir $@) $<
 
-build/%/docs/%.dvi: projects/%/docs/%.tex
+build/docs/%.dvi: src/docs/%.tex
 	@mkdir -p $(dir $@)
 	latex -output-directory=$(dir $@) $<
 
-# Pattern rules for common resources
-build/common/cheatsheets/%.dvi: common/cheatsheets/%.tex
+build/cheatsheets/%.dvi: src/cheatsheets/%.tex
 	@mkdir -p $(dir $@)
 	latex -output-directory=$(dir $@) $<
 
@@ -100,27 +95,6 @@ build/%.ps: build/%.dvi
 build/%.pdf: build/%.ps
 	ps2pdf $< $@
 	@rm -f $< $*.dvi
-
-# Migration target - helps migrate from old structure to new project structure
-migrate: build-dirs
-	@echo "Creating project structure..."
-	@mkdir -p projects/basic_laser/schematics projects/basic_laser/tests projects/basic_laser/docs
-	@mkdir -p projects/advanced_imaging/schematics projects/advanced_imaging/tests projects/advanced_imaging/docs
-	@mkdir -p common/cheatsheets common/templates
-	@if [ -d tex/schematics ]; then \
-		cp tex/schematics/simple_schematic.tex projects/basic_laser/schematics/ 2>/dev/null || true; \
-		cp tex/schematics/imaging_system_schematic.tex projects/advanced_imaging/schematics/ 2>/dev/null || true; \
-		echo "Migrated schematic files"; \
-	fi
-	@if [ -d tex/tests ]; then \
-		cp tex/tests/simple_test.tex projects/basic_laser/tests/ 2>/dev/null || true; \
-		echo "Migrated test files"; \
-	fi
-	@if [ -d tex/cheatsheets ]; then \
-		cp tex/cheatsheets/*.tex common/cheatsheets/ 2>/dev/null || true; \
-		echo "Migrated cheatsheet files"; \
-	fi
-	@echo "Migration complete. New structure is ready."
 
 clean:
 	rm -rf build 
