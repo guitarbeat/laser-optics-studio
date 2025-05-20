@@ -1,0 +1,25 @@
+Element,System,Model
+Glan–Laser Polarizer,Laser,GL5-C
+Zero-Order Half-Wave Plate,Laser,AHWP05M-980
+Pre-Shutter Beam Steering Mirror,Laser,
+Beam Alignment Mirror,Laser,
+Laser Shutter,Laser,
+Beam Collimation Lens,Laser,
+Beam Expansion Lens,Laser,
+Expander Input Steering Mirror,Laser,
+Expander Output Steering Mirror,Laser,
+Microscope Entrance Steering Mirror,Microscope,
+Vertical Periscope Mirror 1,Microscope,
+Vertical Periscope Mirror 2,Microscope,
+Entrance Iris Aperture,Microscope,
+Exit Iris Aperture,Microscope,
+Scan-Relay Steering Mirror,Microscope,
+Pre-Scanner Steering Mirror,Microscope,
+Resonant Scanner (Fast Axis),Microscope,CRS8K
+Galvo–Galvo Scanner (Slow Axis),Microscope,GVS012
+Scan Relay Lens,Microscope,SL50-2P2
+Tube Relay Lens,Microscope,SL50-2P2
+Scan-Objective Lens,Microscope,SL50-2P2
+Plössl Tube Lens,Microscope,AC508-400-C
+Dichroic Beam Splitter,Microscope,FF775
+Microscope Objective,Microscope,XLUMPLFLN 20XW
