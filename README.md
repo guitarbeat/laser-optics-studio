@@ -19,6 +19,14 @@ A graphical interface for creating optical diagrams using the pst-optexp LaTeX p
 - Tkinter (for GUI)
 - LaTeX distribution with pst-optexp package
 
+## Installation
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
 ## Usage
 
 Run the application with:
@@ -26,6 +34,11 @@ Run the application with:
 ```bash
 python3 src/main.py
 ```
+
+## Documentation
+
+- Component reference: `docs/component-reference.md`
+- Docs index: `docs/README.md`
 
 ## Project Structure
 
@@ -44,11 +57,14 @@ src/
 │   └── utils/            # Utility functions
 │       ├── export.py          # PDF and other exports
 │       └── latex_generator.py # LaTeX code generation
-├── docs/                 # Documentation
-│   └── component-reference.md # Component reference
 ├── templates/            # LaTeX templates
 │   └── examples/         # Example optical diagrams
 └── main.py               # Main entry point
+
+# Top-level docs
+/docs
+├── README.md                 # Docs index
+└── component-reference.md    # Component reference
 ```
 
 ## Building Diagrams

@@ -1,5 +1,5 @@
 # Core requirements
-tkinter  # Usually comes with Python, but listed here for clarity
+# (Tkinter is a system package and not installed via pip)
 
 # Testing
 pytest==7.3.1

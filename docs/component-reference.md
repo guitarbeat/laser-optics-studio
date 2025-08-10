@@ -148,4 +148,4 @@ Available colors: red, green, blue, cyan, magenta, yellow, etc.
 - Use the `standalone` document class for easy embedding in other documents
 - For complex diagrams, define nodes with meaningful names
 - Add a title or caption using `\rput[b](x,y){Title}`
-- Customize colors with the `xcolor` package (e.g., `red!70!black` for a darker red) 
+- Customize colors with the `xcolor` package (e.g., `red!70!black` for a darker red)
