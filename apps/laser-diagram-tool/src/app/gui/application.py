@@ -112,8 +112,31 @@ class OpticalDiagramCreator:
         self.component_library.load_components_to_tree(self.component_tree)
         
     def handle_tab(self, event):
-        """Handle tab key in the LaTeX editor to insert spaces instead of changing focus."""
-        self.latex_preview.insert(tk.INSERT, "    ")  # Insert 4 spaces
+        """Handle tab key in the LaTeX editor to insert spaces or indent selected lines."""
+        try:
+            # Check if there is a selection
+            start, end = self.latex_preview.tag_ranges(tk.SEL)
+
+            # Get the selected text
+            selected_text = self.latex_preview.get(start, end)
+
+            # Indent each line of the selection
+            indented_text = ""
+            for line in selected_text.split('\n'):
+                indented_text += "    " + line + "\n"
+
+            # Remove the final newline if the original selection didn't have one
+            if not selected_text.endswith('\n'):
+                indented_text = indented_text.rstrip('\n')
+
+            # Replace the selection with the indented text
+            self.latex_preview.delete(start, end)
+            self.latex_preview.insert(start, indented_text)
+
+        except tk.TclError:
+            # No selection, so just insert 4 spaces
+            self.latex_preview.insert(tk.INSERT, "    ")
+
         return "break"  # Prevent default tab behavior
         
     def add_selected_component(self):
