@@ -602,4 +602,35 @@
   from {
     stroke-dashoffset: 10;
   }
-} 
+}
+
+@media (max-width: 768px) {
+  .laser-canvas-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+    overflow-y: visible;
+  }
+
+  .canvas {
+    height: 60vh;
+  }
+
+  .component-library {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+
+  .component-details {
+    width: auto;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    top: auto;
+  }
+}
