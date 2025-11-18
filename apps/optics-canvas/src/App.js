@@ -4,6 +4,7 @@ import Papa from 'papaparse';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import LaserCanvas from './components/LaserCanvas';
+import './App.css';
 
 export default function App() {
   const [rowData, setRowData] = useState([]);
@@ -36,13 +37,32 @@ export default function App() {
       });
   }, []);
 
-  const [columnDefs] = useState([
-    { field: 'position', headerName: 'Position', width: 100, editable: true },
-    { field: 'drag', rowDrag: true, headerName: '', width: 40 },
-    { field: 'Element', sortable: true, filter: true, editable: true },
-    { field: 'System', sortable: true, filter: true, editable: true },
-    { field: 'Model', sortable: true, filter: true, editable: true },
-  ]);
+  const [columnDefs, setColumnDefs] = useState([]);
+
+  const updateColumnDefs = () => {
+    if (window.innerWidth < 768) {
+      setColumnDefs([
+        { field: 'position', headerName: 'Pos', width: 60, editable: true },
+        { field: 'drag', rowDrag: true, headerName: '', width: 30 },
+        { field: 'Element', sortable: true, filter: true, editable: true, flex: 1 },
+        { field: 'System', sortable: true, filter: true, editable: true, flex: 1 },
+      ]);
+    } else {
+      setColumnDefs([
+        { field: 'position', headerName: 'Position', width: 100, editable: true },
+        { field: 'drag', rowDrag: true, headerName: '', width: 40 },
+        { field: 'Element', sortable: true, filter: true, editable: true, flex: 1 },
+        { field: 'System', sortable: true, filter: true, editable: true, flex: 1 },
+        { field: 'Model', sortable: true, filter: true, editable: true, flex: 1 },
+      ]);
+    }
+  };
+
+  useEffect(() => {
+    updateColumnDefs();
+    window.addEventListener('resize', updateColumnDefs);
+    return () => window.removeEventListener('resize', updateColumnDefs);
+  }, []);
 
   // Debounce function to prevent too many saves
   const debounce = (func, delay) => {
@@ -146,38 +166,27 @@ export default function App() {
     }
   };
 
-  // Tab styles
-  const tabStyle = {
-    padding: '10px 20px',
-    backgroundColor: '#333',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px 4px 0 0',
-    cursor: 'pointer',
-    marginRight: '5px',
-    fontSize: '16px',
-    fontWeight: 'bold',
-  };
-
-  const activeTabStyle = {
-    ...tabStyle,
-    backgroundColor: '#4CAF50',
+  const getSaveStatusClassName = () => {
+    if (saveStatus === 'Saving...' || saveStatus === 'Editing...') return 'saving';
+    if (saveStatus === 'Error saving') return 'error';
+    if (saveStatus.includes('saved')) return 'saved';
+    return '';
   };
 
   return (
-    <div style={{ padding: '20px', backgroundColor: '#1e1e1e', minHeight: '100vh' }}>
-      <h1 style={{ color: '#ffffff', textAlign: 'center' }}>Laser Components</h1>
+    <div className="app-container">
+      <h1 className="app-header">Laser Components</h1>
       
       {/* Tab Navigation */}
-      <div style={{ display: 'flex', marginBottom: '20px' }}>
+      <div className="tab-nav">
         <button 
-          style={activeTab === 'grid' ? activeTabStyle : tabStyle}
+          className={`tab-button ${activeTab === 'grid' ? 'active' : ''}`}
           onClick={() => setActiveTab('grid')}
         >
           Data Grid
         </button>
         <button 
-          style={activeTab === 'canvas' ? activeTabStyle : tabStyle}
+          className={`tab-button ${activeTab === 'canvas' ? 'active' : ''}`}
           onClick={() => setActiveTab('canvas')}
         >
           Canvas Editor
@@ -187,52 +196,23 @@ export default function App() {
       {/* Tab Content */}
       {activeTab === 'grid' && (
         <>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            marginBottom: '10px', 
-            padding: '0 10px'
-          }}>
-            <div style={{ 
-              color: saveStatus === 'Saving...' || saveStatus === 'Editing...' ? '#FFA500' : 
-                    saveStatus === 'Error saving' ? '#FF0000' : '#4CAF50',
-              transition: 'opacity 0.3s',
-              opacity: saveStatus ? 1 : 0,
-              fontWeight: 'bold'
-            }}>
+          <div className="grid-toolbar">
+            <div
+              className={`save-status ${getSaveStatusClassName()}`}
+              style={{ opacity: saveStatus ? 1 : 0 }}
+            >
               {saveStatus}
             </div>
             <div>
               <button 
                 onClick={handleDownloadCSV}
-                style={{
-                  padding: '8px 16px',
-                  backgroundColor: '#4CAF50',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  marginLeft: '10px'
-                }}
+                className="download-csv-button"
               >
                 Download CSV
               </button>
             </div>
           </div>
-          <div 
-            className="ag-theme-alpine-dark" 
-            style={{ 
-              width: '800px', 
-              height: '600px', 
-              margin: 'auto',
-              '--ag-background-color': '#222',
-              '--ag-odd-row-background-color': '#333',
-              '--ag-header-background-color': '#111',
-              '--ag-foreground-color': '#fff',
-              '--ag-border-color': '#444'
-            }}
-          >
+          <div className="ag-theme-alpine-dark grid-container">
             <AgGridReact
               ref={gridRef}
               columnDefs={columnDefs}

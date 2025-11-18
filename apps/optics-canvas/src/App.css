@@ -1,0 +1,104 @@
+.app-container {
+  padding: 20px;
+  background-color: #1e1e1e;
+  min-height: 100vh;
+}
+
+.app-header {
+  color: #ffffff;
+  text-align: center;
+}
+
+.tab-nav {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.tab-button.active {
+  background-color: #4CAF50;
+}
+
+.grid-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 0 10px;
+}
+
+.save-status {
+  transition: opacity 0.3s;
+  font-weight: bold;
+}
+
+.save-status.saving {
+  color: #FFA500;
+}
+
+.save-status.error {
+  color: #FF0000;
+}
+
+.save-status.saved {
+  color: #4CAF50;
+}
+
+.download-csv-button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.grid-container {
+  width: 100%;
+  max-width: 800px;
+  height: 600px;
+  margin: auto;
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 10px;
+  }
+
+  .tab-nav {
+    flex-direction: column;
+  }
+
+  .tab-button {
+    margin-right: 0;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+
+  .grid-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .download-csv-button {
+    margin-top: 10px;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .grid-container {
+    height: 400px;
+  }
+}
